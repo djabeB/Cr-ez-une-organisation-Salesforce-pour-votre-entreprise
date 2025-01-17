@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningMessageChannel xmlns="http://soap.sforce.com/2006/04/metadata">
+    <masterLabel>OpportunityProductUpdate</masterLabel>
+    <isExposed>true</isExposed>
+    <description>Canal de message pour la mise à jour des produits d'opportunité</description>
+    <lightningMessageFields>
+        <fieldName>recordId</fieldName>
+        <description>ID de l'enregistrement mis à jour</description>
+    </lightningMessageFields>
+</LightningMessageChannel>

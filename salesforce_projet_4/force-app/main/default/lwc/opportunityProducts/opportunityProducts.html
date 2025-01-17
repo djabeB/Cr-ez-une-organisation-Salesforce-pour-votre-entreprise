@@ -1,0 +1,31 @@
+<template>
+    <div class="slds-card">
+        <lightning-datatable
+            key-field="Id"
+            data={opportunityProducts}
+            columns={columns}
+            hide-checkbox-column
+            onrowaction={handleRowAction}
+            class="slds-table_bordered"
+            row-number-offset="0"
+            default-sort-direction="asc"
+            suppress-bottom-bar
+            row-class={rowClass}>
+        </lightning-datatable>
+
+        <template if:false={hasProducts}>
+            <div class="slds-align_absolute-center slds-p-around_medium">
+                Aucun produit n'est présent pour le moment
+            </div>
+        </template>
+
+        <template if:true={hasStockWarning}>
+            <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_warning" role="alert">
+                <span>
+                    Vous avez au moins une ligne avec un problème de quantité, veuillez supprimer cette ligne ou réduire sa quantité.
+                    Si vous avez absolument besoin de plus de produits, veuillez contacter votre Système administrateur.
+                </span>
+            </div>
+        </template>
+    </div>
+</template>

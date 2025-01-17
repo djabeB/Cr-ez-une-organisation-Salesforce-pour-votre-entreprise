@@ -1,0 +1,4 @@
+:host .quantity-warning {
+    background-color: rgb(255, 185, 185) !important;
+    color: rgb(89, 6, 0) !important;
+}
