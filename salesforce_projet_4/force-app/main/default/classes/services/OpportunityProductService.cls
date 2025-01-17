@@ -62,6 +62,19 @@ public with sharing class OpportunityProductService {
         System.debug(newOpp);
         if (newOpp.StageName == 'Closed Won' && oldOpp.StageName != 'Closed Won') {
             validateAndUpdateStock(newOpp.Id);
+            publishStockUpdateEvent(newOpp.Id);
+        }
+    }
+
+    private void publishStockUpdateEvent(Id opportunityId) {
+        try {
+            OpportunityProductUpdate_e__e event = new OpportunityProductUpdate_e__e(
+                Opportunity_Id_c__c = opportunityId
+            );
+            EventBus.publish(event);
+        } catch (Exception e) {
+            // Log l'erreur mais ne pas l'envoyer à l'utilisateur car le stock a déjà été mis à jour
+            System.debug('Error publishing stock update event: ' + e.getMessage());
         }
     }
     
@@ -95,6 +108,10 @@ public with sharing class OpportunityProductService {
         }
         
         update productsToUpdate;
+    }
+
+    public void updateProductStocks(Id opportunityId) {
+        validateAndUpdateStock(opportunityId);
     }
     
 }

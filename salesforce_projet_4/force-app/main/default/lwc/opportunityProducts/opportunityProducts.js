@@ -6,7 +6,30 @@ import { NavigationMixin } from 'lightning/navigation';
 import { refreshApex } from '@salesforce/apex';
 import { subscribe, unsubscribe, onError } from 'lightning/empApi';
 
+// Import des Custom Labels
+import NO_PRODUCTS_MESSAGE from '@salesforce/label/c.No_Products_Message';
+import STOCK_WARNING_MESSAGE from '@salesforce/label/c.Stock_Warning_Message';
+import PRODUCT_NAME_COLUMN from '@salesforce/label/c.Product_Name_Column';
+import UNIT_PRICE_COLUMN from '@salesforce/label/c.Unit_Price_Column';
+import TOTAL_PRICE_COLUMN from '@salesforce/label/c.Total_Price_Column';
+import QUANTITY_COLUMN from '@salesforce/label/c.Quantity_Column';
+import STOCK_QUANTITY_COLUMN from '@salesforce/label/c.Stock_Quantity_Column';
+import DELETE_ACTION from '@salesforce/label/c.Delete_Action';
+import VIEW_PRODUCT_ACTION from '@salesforce/label/c.View_Product_Action';
+
 export default class OpportunityProducts extends NavigationMixin(LightningElement) {
+    label = {
+        noProducts: NO_PRODUCTS_MESSAGE,
+        stockWarning: STOCK_WARNING_MESSAGE,
+        productName: PRODUCT_NAME_COLUMN,
+        unitPrice: UNIT_PRICE_COLUMN,
+        totalPrice: TOTAL_PRICE_COLUMN,
+        quantity: QUANTITY_COLUMN,
+        stockQuantity: STOCK_QUANTITY_COLUMN,
+        deleteAction: DELETE_ACTION,
+        viewProduct: VIEW_PRODUCT_ACTION
+    };
+
     @api recordId;
     opportunityProducts;
     columns;
@@ -73,22 +96,22 @@ export default class OpportunityProducts extends NavigationMixin(LightningElemen
     initializeColumns() {
         this.columns = [
             { 
-                label: 'Nom du produit', 
+                label: this.label.productName, 
                 fieldName: 'productName', 
                 type: 'text'
             },
             { 
-                label: 'Prix unitaire', 
+                label: this.label.unitPrice, 
                 fieldName: 'UnitPrice', 
                 type: 'currency'
             },
             { 
-                label: 'Prix total', 
+                label: this.label.totalPrice, 
                 fieldName: 'TotalPrice', 
                 type: 'currency'
             },
             { 
-                label: 'Quantité', 
+                label: this.label.quantity, 
                 fieldName: 'quantity', 
                 type: 'number',
                 cellAttributes: {
@@ -96,7 +119,7 @@ export default class OpportunityProducts extends NavigationMixin(LightningElemen
                 }
             },
             { 
-                label: 'Quantité en stock', 
+                label: this.label.stockQuantity, 
                 fieldName: 'quantityInStock', 
                 type: 'number',
                 cellAttributes: {
@@ -107,11 +130,11 @@ export default class OpportunityProducts extends NavigationMixin(LightningElemen
     
         const actions = this.isAdmin ? 
             [
-                { label: 'Supprimer', name: 'delete', iconName: 'utility:delete' },
-                { label: 'Voir produit', name: 'view', iconName: 'utility:preview' }
+                { label: this.label.deleteAction, name: 'delete', iconName: 'utility:delete' },
+                { label: this.label.viewProduct, name: 'view', iconName: 'utility:preview' }
             ] : 
             [
-                { label: 'Supprimer', name: 'delete', iconName: 'utility:delete' }
+                { label: this.label.deleteAction, name: 'delete', iconName: 'utility:delete' }
             ];
     
         this.columns.push({

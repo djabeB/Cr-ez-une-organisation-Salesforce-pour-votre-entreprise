@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Translations xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customLabels>
+        <name>No_Products_Message</name>
+        <label>Aucun produit n'est présent pour le moment</label>
+    </customLabels>
+    <customLabels>
+        <name>Stock_Warning_Message</name>
+        <label>Vous avez au moins une ligne avec un problème de quantité, veuillez supprimer cette ligne ou réduire sa quantité. Si vous avez absolument besoin de plus de produits, veuillez contacter votre Système administrateur.</label>
+    </customLabels>
+    <customLabels>
+        <name>Product_Name_Column</name>
+        <label>Nom du produit</label>
+    </customLabels>
+    <customLabels>
+        <name>Unit_Price_Column</name>
+        <label>Prix unitaire</label>
+    </customLabels>
+    <customLabels>
+        <name>Total_Price_Column</name>
+        <label>Prix total</label>
+    </customLabels>
+    <customLabels>
+        <name>Quantity_Column</name>
+        <label>Quantité</label>
+    </customLabels>
+    <customLabels>
+        <name>Stock_Quantity_Column</name>
+        <label>Quantité en stock</label>
+    </customLabels>
+    <customLabels>
+        <name>Delete_Action</name>
+        <label>Supprimer</label>
+    </customLabels>
+    <customLabels>
+        <name>View_Product_Action</name>
+        <label>Voir produit</label>
+    </customLabels>
+</Translations>
