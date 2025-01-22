@@ -30,7 +30,12 @@ private class OpportunityProductControllerTest {
             QuantityInStock__c = 100
         );
         insert prod;
-        
+        Product2 prodUpdateStock = new Product2(
+            Name = 'Test product update stock',
+            IsActive = true,
+            QuantityInStock__c = 100
+        );
+        insert prodUpdateStock;
         // Créer entrée dans PricebookEntry
         Id standardPricebookId = Test.getStandardPricebookId();
         PricebookEntry pbe = new PricebookEntry(
@@ -41,6 +46,14 @@ private class OpportunityProductControllerTest {
         );
         insert pbe;
         
+         PricebookEntry pbeStock = new PricebookEntry(
+            Pricebook2Id = standardPricebookId,
+            Product2Id = prodUpdateStock.Id,
+            UnitPrice = 100,
+            IsActive = true
+        );
+        insert pbeStock;
+        
         // Créer une opportunité
         Opportunity opp = new Opportunity(
             Name = 'Test Opportunity',
@@ -48,6 +61,13 @@ private class OpportunityProductControllerTest {
             CloseDate = Date.today().addDays(10)
         );
         insert opp;
+        
+         Opportunity oppUpdateStock = new Opportunity(
+            Name = 'Test Opportunity Update Stock',
+            StageName = 'Prospecting',
+            CloseDate = Date.today().addDays(10)
+        );
+        insert oppUpdateStock;
         
         // Ajouter produit à l'opportunité
         OpportunityLineItem oli = new OpportunityLineItem(
@@ -57,6 +77,14 @@ private class OpportunityProductControllerTest {
             UnitPrice = 100
         );
         insert oli;
+        
+        OpportunityLineItem oliUpdateStock = new OpportunityLineItem(
+            OpportunityId = oppUpdateStock.Id,
+            PricebookEntryId = pbeStock.Id,
+            Quantity = 10,
+            UnitPrice = 100
+        );
+        insert oliUpdateStock;
     }
     
     @IsTest
@@ -95,13 +123,14 @@ private class OpportunityProductControllerTest {
     
     @IsTest
     static void testDeleteOpportunityProduct() {
-        OpportunityLineItem oli = [SELECT Id FROM OpportunityLineItem LIMIT 1];
+        Opportunity testOpp = [SELECT Id FROM Opportunity WHERE Name = 'Test Opportunity' LIMIT 1];
+        OpportunityLineItem oli = [SELECT Id FROM OpportunityLineItem Where opportunityId =: testOpp.Id LIMIT 1];
         
         Test.startTest();
         OpportunityProductController.deleteOpportunityProduct(oli.Id);
         Test.stopTest();
         
-        List<OpportunityLineItem> remainingOlis = [SELECT Id FROM OpportunityLineItem];
+        List<OpportunityLineItem> remainingOlis = [SELECT Id FROM OpportunityLineItem Where opportunityId =: testOpp.Id LIMIT 1];
         System.assertEquals(0, remainingOlis.size(), 'Product should be deleted');
     }
     
@@ -116,4 +145,24 @@ private class OpportunityProductControllerTest {
         }
         Test.stopTest();
     }
+    
+    @IsTest
+    static void testUpdateProductStock() {
+        Opportunity testOpp = [SELECT Id FROM Opportunity WHERE Name = 'Test Opportunity Update Stock' LIMIT 1];
+        Test.startTest();
+        
+        //testOpp.StageName = 'Closed Won';
+        //update testOpp;
+        OpportunityProductController.updateProductStock(testOpp.Id);
+
+        Product2 ProductUpdateStock =  [SELECT Id, QuantityInStock__c  from Product2 Where Name = 'Test product update stock' LIMIT 1];
+        
+        System.assert(ProductUpdateStock.QuantityInStock__c == 90, 'Update success' + ProductUpdateStock.QuantityInStock__c);
+        Test.stopTest();
+        
+    }
+    
+    
+    
+    
 }
